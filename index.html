@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Float 数学函数计算器</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- 主题切换按钮：右上角悬浮 -->
+  <button id="theme-toggle" class="theme-toggle" title="切换明/暗主题" aria-label="切换明/暗主题">🌙</button>
+
+  <header>
+    <h1>Float 数学函数计算器</h1>
+    <p>复杂运算可能有较大误差，建议使用C++代码生成，然后在C++环境验证结果。</p>
+  </header>
+
+  <main>
+    <section class="controls">
+      <div class="row">
+        <label for="func">函数</label>
+        <select id="func"></select>
+      </div>
+
+      <div id="inputs" class="inputs">
+        <!-- a 输入：十进制与十六进制位型双通道，任填其一，另一侧自动联动显示 -->
+        <div class="row" data-arg="a">
+          <label for="arg-a-dec">a</label>
+          <input id="arg-a" type="text" class="hidden" aria-hidden="true" tabindex="-1" />
+          <input id="arg-a-dec" type="text" placeholder="输入 a（十进制）" />
+          <input id="arg-a-hex" type="text" placeholder="输入 a（十六进制位型 0x或8位）" />
+        </div>
+        <div class="row" data-arg="b">
+          <label for="arg-b-dec">b</label>
+          <input id="arg-b" type="text" class="hidden" aria-hidden="true" tabindex="-1" />
+          <input id="arg-b-dec" type="text" placeholder="输入 b（十进制）" />
+          <input id="arg-b-hex" type="text" placeholder="输入 b（十六进制位型 0x或8位）" />
+        </div>
+        <div class="row" data-arg="c">
+          <label for="arg-c-dec">c</label>
+          <input id="arg-c" type="text" class="hidden" aria-hidden="true" tabindex="-1" />
+          <input id="arg-c-dec" type="text" placeholder="输入 c（十进制）" />
+          <input id="arg-c-hex" type="text" placeholder="输入 c（十六进制位型 0x或8位）" />
+        </div>
+        <div class="row" data-arg="exp">
+          <label for="arg-exp">exp（整数）</label>
+          <input id="arg-exp" type="text" placeholder="输入 exp（整数）" />
+        </div>
+      </div>
+
+      <div class="row actions">
+        <button id="btn-calc">计算</button>
+        <button id="btn-clear">清空</button>
+        <button id="btn-fill-examples">填充示例</button>
+      </div>
+
+      <div id="hints" class="hints"></div>
+    </section>
+
+    <section class="result">
+      <h2>结果</h2>
+      <div class="result-grid">
+        <div>
+          <div class="label">十进制</div>
+          <div id="out-dec" class="mono"></div>
+        </div>
+        <div>
+          <div class="label">科学计数法</div>
+          <div id="out-sci" class="mono"></div>
+        </div>
+        <div>
+          <div class="label">Float32 位型（十六进制）</div>
+          <div id="out-hex" class="mono"></div>
+        </div>
+      </div>
+      <div class="status">
+        <div class="label">状态</div>
+        <div id="out-status" class="mono"></div>
+      </div>
+    </section>
+
+    <section class="tests">
+      <h2>函数速选面板</h2>
+      <div class="test-grid" id="test-buttons"></div>
+      <div id="test-log" class="test-log mono"></div>
+    </section>
+
+    <section class="tests" id="history-section">
+      <h2>历史运算</h2>
+      <div id="history-log" class="test-log mono"></div>
+    </section>
+  </main>
+
+  <footer>
+    <small>实现函数：加、减、乘、除、fma、sqrt、rsqrt、ldexp、pow、log、log2、log1p、exp、exp10、expm1、fmod、lgamma、erf、sinh、tanh、y1、sincos、cosh、j0、j1、i0、i1 等。</small>
+  </footer>
+
+  <script src="./app.js"></script>
+  <script>
+    (function(){
+      const KEY = "themeMode";
+      function apply(mode){
+        // mode: "dark" | "light"
+        if(mode === "light"){
+          document.documentElement.classList.add("light");
+          document.documentElement.classList.remove("dark");
+          const btn = document.getElementById("theme-toggle");
+          if (btn) btn.textContent = "☀️";
+        }else{
+          document.documentElement.classList.add("dark");
+          document.documentElement.classList.remove("light");
+          const btn = document.getElementById("theme-toggle");
+          if (btn) btn.textContent = "🌙";
+        }
+      }
+      // 默认暗色
+      let mode = localStorage.getItem(KEY) || "dark";
+      apply(mode);
+      window.addEventListener("DOMContentLoaded", function(){
+        const btn = document.getElementById("theme-toggle");
+        if (!btn) return;
+        btn.addEventListener("click", function(){
+          mode = (document.documentElement.classList.contains("light") ? "dark" : "light");
+          localStorage.setItem(KEY, mode);
+          apply(mode);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

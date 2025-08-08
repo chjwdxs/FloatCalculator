@@ -1,0 +1,278 @@
+:root{
+  --bg:#0b0f14;
+  --fg:#e6edf3;
+  --muted:#9aa4ad;
+  --accent:#2ea043;
+  --warn:#d29922;
+  --error:#f85149;
+  --panel:#111723;
+  --panel2:#0f1420;
+  --border:#1f2a3a;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  --radius:10px;
+}
+/* 明亮主题变量（应用于 html.light 或 :root.light） */
+.light{
+  --bg:#ffffff;
+  --fg:#111111;
+  --muted:#666666;
+  --accent:#1a7f37;
+  --warn:#8a6d1d;
+  --error:#b42318;
+  --panel:#ffffff;
+  --panel2:#ffffff;
+  --border:#dddddd;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:linear-gradient(180deg,var(--bg),var(--bg) 40%, var(--bg) 100%);
+  color:var(--fg);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans","Helvetica Neue",Arial;
+  line-height:1.5;
+}
+header,footer,main,section{width:100%}
+header{
+  padding:20px 16px 0 16px;
+  /* 页面整体加宽一点点 */
+  max-width:1080px;margin:0 auto;
+}
+header h1{
+  margin:0 0 8px 0;
+  letter-spacing:.5px;
+  font-size:26px;
+}
+header p{
+  margin:0 0 16px 0;color:var(--muted)
+}
+main{
+  /* 页面整体加宽一点点 */
+  max-width:1080px;margin:0 auto;padding:16px;
+  display:grid;gap:16px;
+  grid-template-columns: 1fr;
+}
+@media(min-width:900px){
+  main{grid-template-columns: 1fr}
+}
+.controls, .result, .tests{
+  background:linear-gradient(180deg,var(--panel), var(--panel2));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+}
+.controls .row, .inputs .row{
+  display:flex;gap:12px;align-items:center;margin-bottom:12px;
+}
+.controls label{min-width:120px;color:var(--muted)}
+.controls select, .controls input{
+  flex:1;
+  padding:10px 12px;border-radius:8px;
+  border:1px solid var(--border);
+  background:var(--panel2);color:var(--fg);
+  outline:none;
+}
+.controls select:focus, .controls input:focus{
+  border-color:#305a8d; box-shadow:0 0 0 3px rgba(48,90,141,.25)
+}
+.actions{gap:10px}
+.actions button{
+  padding:10px 14px;border-radius:8px;border:1px solid var(--border);
+  background:#122036;color:var(--fg);cursor:pointer;
+}
+.light .actions button{ background:#f3f6fb; color:#111; }
+.actions button:hover{background:#162949}
+.light .actions button:hover{background:#e7eef9}
+.actions #btn-calc{background:#17331f;border-color:#214e32}
+.actions #btn-calc:hover{background:#184224}
+.light .actions #btn-calc{background:#e7f4eb;border-color:#cfe7d5;color:#0f3d22}
+.light .actions #btn-calc:hover{background:#def0e4}
+.hints{min-height:20px;color:var(--warn)}
+.result h2,.tests h2{margin:0 0 12px 0}
+.result-grid{
+  display:grid;gap:12px;
+  grid-template-columns:1fr;
+}
+@media(min-width:700px){
+  .result-grid{grid-template-columns:1fr 1fr 1fr}
+}
+.label{font-size:12px;color:var(--muted);margin-bottom:6px}
+.mono{font-family:var(--mono);word-break:break-all}
+.status{
+  margin-top:10px;padding:10px;border-radius:8px;
+  background:#0f1a2c;border:1px dashed #23324a
+}
+.light .status{
+  background:#f5f7fb;border-color:#d8e0ef
+}
+/* 旧的测试按钮栅格，保留但不再用于“函数速选面板”动态分组 */
+.test-grid{
+  display:grid;gap:8px;width: 100%
+}
+.test-grid button{
+  text-align:left;padding:10px;border-radius:8px;border:1px solid var(--border);
+  background:#0e1b2b;color:var(--fg);cursor:pointer
+}
+.light .test-grid button{ background:#f3f6fb; color:#111; }
+.test-grid button:hover{background:#13243a}
+.light .test-grid button:hover{background:#e7eef9}
+
+/* ===== 函数速选面板：布局与折叠样式增强 ===== */
+.quick-panel-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  /* 让面板本身在网格中可拉伸，避免仅靠左显示 */
+  width: 100%;
+}
+
+/* 顶部搜索框 */
+.quick-search {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+  background: var(--panel2);
+  color: var(--fg);
+  display: block;
+}
+
+/* 分组容器 */
+.quick-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 单个分组 */
+.quick-group {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--panel);
+}
+
+/* 分组头：可点击折叠 */
+.quick-group-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  background: #0f1a2c;
+  border-bottom: 1px solid var(--border);
+}
+.light .quick-group-header {
+  background: #f0f3f9;
+}
+
+/* 数量标记 */
+.quick-count {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+/* 分组体：中间排布可为两列，在更宽时自动增加列；默认两列起步 */
+.quick-group-body {
+  padding: 8px;
+  display: grid;
+  /* 默认两列起步，容器更宽时自动扩展为 3/4 列 */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  justify-items: stretch;
+  align-items: stretch;
+}
+@media (min-width: 700px) {
+  .quick-group-body {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+/* 快速按钮：在网格列中拉伸，保证横向铺满的视觉一致性 */
+.quick-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 8px;
+  min-height: 30px;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #0e1b2b;
+  color: var(--fg);
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.light .quick-btn {
+  background:#f3f6fb; color:#111;
+}
+.quick-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: #13243a;
+}
+.light .quick-btn:hover {
+  background:#e7eef9;
+}
+
+/* 小屏优化：进一步减小最小列宽；中屏也优化列数 */
+@media (max-width: 900px) {
+  .quick-group-body {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+  }
+  .quick-btn {
+    font-size: 12px;
+    min-height: 28px;
+    padding: 5px 7px;
+  }
+}
+@media (max-width: 480px) {
+  .quick-group-body {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+  .quick-btn {
+    font-size: 11px;
+    min-height: 26px;
+    padding: 4px 6px;
+  }
+}
+.test-log{
+  margin-top:10px;max-height:220px;overflow:auto;
+  background:#0a1524;border:1px solid var(--border);border-radius:8px;padding:10px;
+  white-space:pre-wrap
+}
+.light .test-log{
+  background:#fafbfd;border-color:#e6eaf2
+}
+footer{
+  /* 页面整体加宽一点点 */
+  max-width:1080px;margin:0 auto;padding:0 16px 32px 16px;color:var(--muted)
+}
+.hidden{display:none !important}
+.err{color:var(--error)}
+.ok{color:var(--accent)}
+.warn{color:var(--warn)}
+
+/* 右上角主题切换按钮 */
+.theme-toggle{
+  position:fixed;top:12px;right:12px;z-index:1000;
+  border:1px solid var(--border);
+  background:var(--panel);color:var(--fg);
+  border-radius:999px;padding:8px 10px;cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+.theme-toggle:hover{ filter:brightness(1.08) }
